@@ -1,0 +1,38 @@
+.jumbotron {
+  padding-top: 6rem;
+  background-color: #ffff;
+}
+
+/* Default (Light Mode) */
+body {
+  background-color: white;
+  color: black;
+}
+
+.table {
+  background-color: white;
+  color: black;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .table {
+  background-color: #333;
+  color: white;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

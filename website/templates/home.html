@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<section class="jumbotron mt-4"><h1>Association Rules</h1></section>
+
+<!-- File Upload Form -->
+<form method="POST" enctype="multipart/form-data">
+  <!-- Existing form content -->
+</form>
+
+<!-- Display dataset preview -->
+<h2></h2>
+{% if df is not none %}
+<div style="max-height: 400px; overflow-y: auto">
+  <table class="table">
+    <!-- Existing table code -->
+  </table>
+</div>
+{% else %}
+<p>No dataset uploaded yet.</p>
+{% endif %}
+
+<!-- File Upload Form -->
+<form method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="file">Upload Dataset (Excel):</label>
+    <input type="file" class="form-control" name="file" required />
+  </div>
+
+  <!-- Sliders -->
+  <div class="form-group">
+    <label for="min_support">Set Support:</label>
+    <input
+      type="range"
+      class="form-control"
+      id="min_support"
+      name="min_support"
+      min="0.01"
+      max="0.20"
+      step="0.001"
+      value="0.01"
+    />
+    <small id="min_support_value">0.1</small>
+  </div>
+
+  <div class="form-group">
+    <label for="min_threshold">Set Confidence:</label>
+    <input
+      type="range"
+      class="form-control"
+      id="min_threshold"
+      name="min_threshold"
+      min="0.1"
+      max="1"
+      step="0.01"
+      value="0.1"
+    />
+    <small id="min_threshold_value">0.1</small>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<section id="DH" class="mb-3 mt-5">
+  <h3>Dataset Head:</h3>
+</section>
+{% if df is not none and not df.empty %}
+<div style="max-height: 400px; overflow-y: auto">
+  <table class="table">
+    <thead>
+      <tr>
+        {% for column in df.columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in df.itertuples(index=False) %}
+      <tr>
+        {% for value in row %}
+        <td>{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No dataset uploaded yet.</p>
+{% endif %}
+
+<section id="FI" class="mt-5 mb-3">
+  <h3>Frequent Itemsets:</h3>
+</section>
+{% if frq_items is not none %}
+<div style="max-height: 400px; overflow-y: auto">
+  <table class="table">
+    <thead>
+      <tr>
+        {% for column in frq_items.columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in frq_items.itertuples() %}
+      <tr>
+        {% for value in row[1:] %}
+        <td>
+          {% if value is iterable and not value is string %} {{ value|join(', ') }} {% else %} {{ value }} {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No frequent itemsets generated.</p>
+{% endif %}
+
+<section id="AR" class="mt-5 mb-3">
+  <h3>Association Rules:</h3>
+</section>
+{% if rules is not none %}
+<div style="max-height: 400px; overflow-y: auto">
+  <table class="table">
+    <thead>
+      <tr>
+        {% for column in rules.columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rules.itertuples() %}
+      <tr>
+        {% for value in row[1:] %}
+        <td>
+          {% if value is iterable and not value is string %} {{ value|join(', ') }} {% else %} {{ value }} {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No association rules generated.</p>
+{% endif %}
+
+<section id="japaskrip" class="mb-5">
+  <script>
+    document.getElementById("min_support").oninput = function () {
+      document.getElementById("min_support_value").innerText = this.value;
+    };
+    document.getElementById("min_threshold").oninput = function () {
+      document.getElementById("min_threshold_value").innerText = this.value;
+    };
+  </script>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Dataset{% endblock %} {% block content %}
+<section class="jumbotron mt-4">
+  <h1>Uploaded Dataset</h1>
+</section>
+
+{% if df is not none and not df.empty %}
+<div class="mb-5">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        {% for column in df.columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in df.itertuples(index=False) %}
+      <tr>
+        {% for value in row %}
+        <td>{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No dataset available. Please upload a file on the <a href="/">homepage</a>.</p>
+{% endif %} {% endblock %}
